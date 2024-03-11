@@ -19,16 +19,16 @@ public class Email extends BaseEntity {
     @NotEmpty
     @Size(max = 150)
     @javax.validation.constraints.Email
-    @Column(name = "to_send", nullable = false, unique = true, length = 150)
+    @Column(name = "to_send", nullable = false, length = 150)
     private String toSend;
 
     @NotEmpty
     @Size(max = 150)
-    @Column(name = "subject", nullable = false, unique = true, length = 150)
+    @Column(name = "subject", nullable = false, length = 150)
     private String subject;
     @NotEmpty
     @Size(max = 2500)
-    @Column(name = "body", nullable = false, unique = true, length = 2500)
+    @Column(name = "body", nullable = false, length = 2500)
     private String body;
 
     @NotNull

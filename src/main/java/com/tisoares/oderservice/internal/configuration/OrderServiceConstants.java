@@ -37,7 +37,7 @@ public final class OrderServiceConstants {
             "/actuator/**"
     };
 
-    public static final Integer MAX_EMAIL_ATTEMPTS = 5;
+    public static final Integer MAX_EMAIL_ATTEMPTS = 3;
 
     public static final String ORDER_SUBJECT = "Order ID: %d is completed";
 

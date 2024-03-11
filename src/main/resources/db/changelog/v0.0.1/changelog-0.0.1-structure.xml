@@ -1,5 +1,7 @@
 <?xml version="1.1" encoding="UTF-8" standalone="no"?>
-<databaseChangeLog xmlns="http://www.liquibase.org/xml/ns/dbchangelog" xmlns:ext="http://www.liquibase.org/xml/ns/dbchangelog-ext" xmlns:pro="http://www.liquibase.org/xml/ns/pro" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog-ext http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-ext.xsd http://www.liquibase.org/xml/ns/pro http://www.liquibase.org/xml/ns/pro/liquibase-pro-4.6.xsd http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-4.6.xsd">
+<databaseChangeLog xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                   xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+                   xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-4.6.xsd">
     <changeSet author="tisoares (generated)" id="1710107608933-1">
         <createSequence incrementBy="50" sequenceName="email_seq" startValue="100"/>
     </changeSet>
@@ -132,17 +134,8 @@
             </column>
         </createTable>
     </changeSet>
-    <changeSet author="tisoares (generated)" id="1710107608933-13">
-        <addUniqueConstraint columnNames="body" constraintName="UC_EMAILBODY_COL" tableName="email"/>
-    </changeSet>
     <changeSet author="tisoares (generated)" id="1710107608933-14">
         <addUniqueConstraint columnNames="id" constraintName="UC_EMAILID_COL" tableName="email"/>
-    </changeSet>
-    <changeSet author="tisoares (generated)" id="1710107608933-15">
-        <addUniqueConstraint columnNames="subject" constraintName="UC_EMAILSUBJECT_COL" tableName="email"/>
-    </changeSet>
-    <changeSet author="tisoares (generated)" id="1710107608933-16">
-        <addUniqueConstraint columnNames="to_send" constraintName="UC_EMAILTO_SEND_COL" tableName="email"/>
     </changeSet>
     <changeSet author="tisoares (generated)" id="1710107608933-17">
         <addUniqueConstraint columnNames="id" constraintName="UC_ITEMID_COL" tableName="item"/>
@@ -166,18 +159,33 @@
         <addUniqueConstraint columnNames="id" constraintName="UC_USER_ORDERID_COL" tableName="user_order"/>
     </changeSet>
     <changeSet author="tisoares (generated)" id="1710107608933-24">
-        <addForeignKeyConstraint baseColumnNames="item_id" baseTableName="orders" constraintName="FK1f1jovhxtx7fax217fq0gi17" deferrable="false" initiallyDeferred="false" referencedColumnNames="id" referencedTableName="item" validate="true"/>
+        <addForeignKeyConstraint baseColumnNames="item_id" baseTableName="orders"
+                                 constraintName="FK1f1jovhxtx7fax217fq0gi17" deferrable="false"
+                                 initiallyDeferred="false" referencedColumnNames="id" referencedTableName="item"
+                                 validate="true"/>
     </changeSet>
     <changeSet author="tisoares (generated)" id="1710107608933-25">
-        <addForeignKeyConstraint baseColumnNames="item_id" baseTableName="stock_movement" constraintName="FKeevm1rmqccbotn2t0hqig2ev3" deferrable="false" initiallyDeferred="false" referencedColumnNames="id" referencedTableName="item" validate="true"/>
+        <addForeignKeyConstraint baseColumnNames="item_id" baseTableName="stock_movement"
+                                 constraintName="FKeevm1rmqccbotn2t0hqig2ev3" deferrable="false"
+                                 initiallyDeferred="false" referencedColumnNames="id" referencedTableName="item"
+                                 validate="true"/>
     </changeSet>
     <changeSet author="tisoares (generated)" id="1710107608933-26">
-        <addForeignKeyConstraint baseColumnNames="order_id" baseTableName="order_history" constraintName="FKnw2ljd8jnpdc9y2ild52e79t2" deferrable="false" initiallyDeferred="false" referencedColumnNames="id" referencedTableName="orders" validate="true"/>
+        <addForeignKeyConstraint baseColumnNames="order_id" baseTableName="order_history"
+                                 constraintName="FKnw2ljd8jnpdc9y2ild52e79t2" deferrable="false"
+                                 initiallyDeferred="false" referencedColumnNames="id" referencedTableName="orders"
+                                 validate="true"/>
     </changeSet>
     <changeSet author="tisoares (generated)" id="1710107608933-27">
-        <addForeignKeyConstraint baseColumnNames="user_id" baseTableName="orders" constraintName="FKr49p3bf6n1lsy31i7tldkscpf" deferrable="false" initiallyDeferred="false" referencedColumnNames="id" referencedTableName="user_order" validate="true"/>
+        <addForeignKeyConstraint baseColumnNames="user_id" baseTableName="orders"
+                                 constraintName="FKr49p3bf6n1lsy31i7tldkscpf" deferrable="false"
+                                 initiallyDeferred="false" referencedColumnNames="id" referencedTableName="user_order"
+                                 validate="true"/>
     </changeSet>
     <changeSet author="tisoares (generated)" id="1710107608933-28">
-        <addForeignKeyConstraint baseColumnNames="stock_movement_id" baseTableName="order_history" constraintName="FKr4gnl6cyuo5sgjebbgiwxu7mj" deferrable="false" initiallyDeferred="false" referencedColumnNames="id" referencedTableName="stock_movement" validate="true"/>
+        <addForeignKeyConstraint baseColumnNames="stock_movement_id" baseTableName="order_history"
+                                 constraintName="FKr4gnl6cyuo5sgjebbgiwxu7mj" deferrable="false"
+                                 initiallyDeferred="false" referencedColumnNames="id"
+                                 referencedTableName="stock_movement" validate="true"/>
     </changeSet>
 </databaseChangeLog>

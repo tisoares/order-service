@@ -8,6 +8,7 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.boot.test.mock.mockito.MockitoTestExecutionListener;
 import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.security.test.context.support.WithSecurityContextTestExecutionListener;
 import org.springframework.security.test.web.servlet.setup.SecurityMockMvcConfigurers;
@@ -26,12 +27,12 @@ import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.
 
 @ExtendWith(SpringExtension.class)
 @SpringBootTest
-//@AutoConfigureMockMvc
 @TestExecutionListeners(value = {DependencyInjectionTestExecutionListener.class,
         DirtiesContextTestExecutionListener.class,
         TransactionalTestExecutionListener.class,
         DbUnitTestExecutionListener.class,
-        WithSecurityContextTestExecutionListener.class})
+        WithSecurityContextTestExecutionListener.class,
+        MockitoTestExecutionListener.class})
 @DbUnitConfiguration
 @WithMockUser(username = "admin@admin.com", password = "123456")
 @ActiveProfiles("test")

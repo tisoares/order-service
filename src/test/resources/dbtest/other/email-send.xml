@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<dataset>
+    <EMAIL ID="5" CREATED_AT="2024-03-11 05:00:39.331680000" UPDATED_AT="2024-03-11 05:00:39.331680000" ATTEMPT="0"
+           BODY="&amp;lt;p&amp;gt;Your order id: 5  is completed!&amp;lt;/p&amp;gt;" STATUS="PENDING"
+           SUBJECT="Order ID: 5 is completed" TO_SEND="test@test.com"/>
+    <EMAIL ID="6" CREATED_AT="2024-03-11 05:00:39.331000000" UPDATED_AT="2024-03-11 05:00:39.331000000" ATTEMPT="0"
+           BODY="&amp;lt;p&amp;gt;Your order id: 6  is completed!&amp;lt;/p&amp;gt;" STATUS="PENDING"
+           SUBJECT="Order ID: 6 is completed" TO_SEND="test@test.com"/>
+</dataset>
