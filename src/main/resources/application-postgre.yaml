@@ -1,0 +1,19 @@
+spring:
+  config:
+    activate:
+      on-profile: "postgre"
+  jpa:
+    open-in-view: false
+    show-sql: false
+    database-platform: org.hibernate.dialect.PostgreSQL9Dialect
+    properties:
+      hibernate:
+        dialect: org.hibernate.dialect.PostgreSQL9Dialect
+  datasource:
+    url: jdbc:postgresql://localhost:5432/order_service?currentSchema=order_service&binaryTransfer=true&reWriteBatchedInserts=true&stringtype=unspecified
+    username: order-service
+    password: S3cret
+    driver-class-name: org.postgresql.Driver
+  h2:
+    console:
+      enabled: false

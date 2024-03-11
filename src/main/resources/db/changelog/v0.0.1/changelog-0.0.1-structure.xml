@@ -1,0 +1,183 @@
+<?xml version="1.1" encoding="UTF-8" standalone="no"?>
+<databaseChangeLog xmlns="http://www.liquibase.org/xml/ns/dbchangelog" xmlns:ext="http://www.liquibase.org/xml/ns/dbchangelog-ext" xmlns:pro="http://www.liquibase.org/xml/ns/pro" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog-ext http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-ext.xsd http://www.liquibase.org/xml/ns/pro http://www.liquibase.org/xml/ns/pro/liquibase-pro-4.6.xsd http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-4.6.xsd">
+    <changeSet author="tisoares (generated)" id="1710107608933-1">
+        <createSequence incrementBy="50" sequenceName="email_seq" startValue="100"/>
+    </changeSet>
+    <changeSet author="tisoares (generated)" id="1710107608933-2">
+        <createSequence incrementBy="50" sequenceName="item_seq" startValue="100"/>
+    </changeSet>
+    <changeSet author="tisoares (generated)" id="1710107608933-3">
+        <createSequence incrementBy="50" sequenceName="order_history_seq" startValue="100"/>
+    </changeSet>
+    <changeSet author="tisoares (generated)" id="1710107608933-4">
+        <createSequence incrementBy="50" sequenceName="orders_seq" startValue="100"/>
+    </changeSet>
+    <changeSet author="tisoares (generated)" id="1710107608933-5">
+        <createSequence incrementBy="50" sequenceName="stock_movement_seq" startValue="100"/>
+    </changeSet>
+    <changeSet author="tisoares (generated)" id="1710107608933-6">
+        <createSequence incrementBy="50" sequenceName="users_seq" startValue="100"/>
+    </changeSet>
+    <changeSet author="tisoares (generated)" id="1710107608933-7">
+        <createTable tableName="email">
+            <column name="id" type="BIGINT">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="emailPK"/>
+            </column>
+            <column name="created_at" type="TIMESTAMP WITHOUT TIME ZONE"/>
+            <column name="updated_at" type="TIMESTAMP WITHOUT TIME ZONE"/>
+            <column name="attempt" type="INTEGER">
+                <constraints nullable="false"/>
+            </column>
+            <column name="body" type="VARCHAR(2500)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="status" type="VARCHAR(255)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="subject" type="VARCHAR(150)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="to_send" type="VARCHAR(150)">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+    </changeSet>
+    <changeSet author="tisoares (generated)" id="1710107608933-8">
+        <createTable tableName="item">
+            <column name="id" type="BIGINT">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="itemPK"/>
+            </column>
+            <column name="created_at" type="TIMESTAMP WITHOUT TIME ZONE"/>
+            <column name="updated_at" type="TIMESTAMP WITHOUT TIME ZONE"/>
+            <column name="name" type="VARCHAR(150)">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+    </changeSet>
+    <changeSet author="tisoares (generated)" id="1710107608933-9">
+        <createTable tableName="order_history">
+            <column name="id" type="BIGINT">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="order_historyPK"/>
+            </column>
+            <column name="created_at" type="TIMESTAMP WITHOUT TIME ZONE"/>
+            <column name="updated_at" type="TIMESTAMP WITHOUT TIME ZONE"/>
+            <column name="quantity" type="INTEGER">
+                <constraints nullable="false"/>
+            </column>
+            <column name="order_id" type="BIGINT">
+                <constraints nullable="false"/>
+            </column>
+            <column name="stock_movement_id" type="BIGINT">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+    </changeSet>
+    <changeSet author="tisoares (generated)" id="1710107608933-10">
+        <createTable tableName="orders">
+            <column name="id" type="BIGINT">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="ordersPK"/>
+            </column>
+            <column name="created_at" type="TIMESTAMP WITHOUT TIME ZONE"/>
+            <column name="updated_at" type="TIMESTAMP WITHOUT TIME ZONE"/>
+            <column name="status" type="VARCHAR(255)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="quantity" type="INTEGER">
+                <constraints nullable="false"/>
+            </column>
+            <column name="item_id" type="BIGINT">
+                <constraints nullable="false"/>
+            </column>
+            <column name="user_id" type="BIGINT">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+    </changeSet>
+    <changeSet author="tisoares (generated)" id="1710107608933-11">
+        <createTable tableName="stock_movement">
+            <column name="id" type="BIGINT">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="stock_movementPK"/>
+            </column>
+            <column name="created_at" type="TIMESTAMP WITHOUT TIME ZONE"/>
+            <column name="updated_at" type="TIMESTAMP WITHOUT TIME ZONE"/>
+            <column name="available" type="INTEGER">
+                <constraints nullable="false"/>
+            </column>
+            <column name="quantity" type="INTEGER">
+                <constraints nullable="false"/>
+            </column>
+            <column name="version" type="INTEGER">
+                <constraints nullable="false"/>
+            </column>
+            <column name="item_id" type="BIGINT">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+    </changeSet>
+    <changeSet author="tisoares (generated)" id="1710107608933-12">
+        <createTable tableName="user_order">
+            <column name="id" type="BIGINT">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="user_orderPK"/>
+            </column>
+            <column name="created_at" type="TIMESTAMP WITHOUT TIME ZONE"/>
+            <column name="updated_at" type="TIMESTAMP WITHOUT TIME ZONE"/>
+            <column name="email" type="VARCHAR(150)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="name" type="VARCHAR(150)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="password" type="VARCHAR(150)">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+    </changeSet>
+    <changeSet author="tisoares (generated)" id="1710107608933-13">
+        <addUniqueConstraint columnNames="body" constraintName="UC_EMAILBODY_COL" tableName="email"/>
+    </changeSet>
+    <changeSet author="tisoares (generated)" id="1710107608933-14">
+        <addUniqueConstraint columnNames="id" constraintName="UC_EMAILID_COL" tableName="email"/>
+    </changeSet>
+    <changeSet author="tisoares (generated)" id="1710107608933-15">
+        <addUniqueConstraint columnNames="subject" constraintName="UC_EMAILSUBJECT_COL" tableName="email"/>
+    </changeSet>
+    <changeSet author="tisoares (generated)" id="1710107608933-16">
+        <addUniqueConstraint columnNames="to_send" constraintName="UC_EMAILTO_SEND_COL" tableName="email"/>
+    </changeSet>
+    <changeSet author="tisoares (generated)" id="1710107608933-17">
+        <addUniqueConstraint columnNames="id" constraintName="UC_ITEMID_COL" tableName="item"/>
+    </changeSet>
+    <changeSet author="tisoares (generated)" id="1710107608933-18">
+        <addUniqueConstraint columnNames="name" constraintName="UC_ITEMNAME_COL" tableName="item"/>
+    </changeSet>
+    <changeSet author="tisoares (generated)" id="1710107608933-19">
+        <addUniqueConstraint columnNames="id" constraintName="UC_ORDERSID_COL" tableName="orders"/>
+    </changeSet>
+    <changeSet author="tisoares (generated)" id="1710107608933-20">
+        <addUniqueConstraint columnNames="id" constraintName="UC_ORDER_HISTORYID_COL" tableName="order_history"/>
+    </changeSet>
+    <changeSet author="tisoares (generated)" id="1710107608933-21">
+        <addUniqueConstraint columnNames="id" constraintName="UC_STOCK_MOVEMENTID_COL" tableName="stock_movement"/>
+    </changeSet>
+    <changeSet author="tisoares (generated)" id="1710107608933-22">
+        <addUniqueConstraint columnNames="email" constraintName="UC_USER_ORDEREMAIL_COL" tableName="user_order"/>
+    </changeSet>
+    <changeSet author="tisoares (generated)" id="1710107608933-23">
+        <addUniqueConstraint columnNames="id" constraintName="UC_USER_ORDERID_COL" tableName="user_order"/>
+    </changeSet>
+    <changeSet author="tisoares (generated)" id="1710107608933-24">
+        <addForeignKeyConstraint baseColumnNames="item_id" baseTableName="orders" constraintName="FK1f1jovhxtx7fax217fq0gi17" deferrable="false" initiallyDeferred="false" referencedColumnNames="id" referencedTableName="item" validate="true"/>
+    </changeSet>
+    <changeSet author="tisoares (generated)" id="1710107608933-25">
+        <addForeignKeyConstraint baseColumnNames="item_id" baseTableName="stock_movement" constraintName="FKeevm1rmqccbotn2t0hqig2ev3" deferrable="false" initiallyDeferred="false" referencedColumnNames="id" referencedTableName="item" validate="true"/>
+    </changeSet>
+    <changeSet author="tisoares (generated)" id="1710107608933-26">
+        <addForeignKeyConstraint baseColumnNames="order_id" baseTableName="order_history" constraintName="FKnw2ljd8jnpdc9y2ild52e79t2" deferrable="false" initiallyDeferred="false" referencedColumnNames="id" referencedTableName="orders" validate="true"/>
+    </changeSet>
+    <changeSet author="tisoares (generated)" id="1710107608933-27">
+        <addForeignKeyConstraint baseColumnNames="user_id" baseTableName="orders" constraintName="FKr49p3bf6n1lsy31i7tldkscpf" deferrable="false" initiallyDeferred="false" referencedColumnNames="id" referencedTableName="user_order" validate="true"/>
+    </changeSet>
+    <changeSet author="tisoares (generated)" id="1710107608933-28">
+        <addForeignKeyConstraint baseColumnNames="stock_movement_id" baseTableName="order_history" constraintName="FKr4gnl6cyuo5sgjebbgiwxu7mj" deferrable="false" initiallyDeferred="false" referencedColumnNames="id" referencedTableName="stock_movement" validate="true"/>
+    </changeSet>
+</databaseChangeLog>

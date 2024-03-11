@@ -1,0 +1,13 @@
+spring:
+  config:
+    activate:
+      on-profile: "test"
+  jpa:
+    hibernate:
+      ddl-auto: create-drop
+logging:
+  level:
+    root: INFO
+    com:
+      tisoares:
+        orderservice: DEBUG

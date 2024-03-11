@@ -1,0 +1,62 @@
+server:
+  port: 8080
+
+spring:
+  mvc:
+    path match:
+      matching-strategy: ant_path_matcher
+  datasource:
+    url: jdbc:h2:mem:mydb
+    username: sa
+    password: password
+    driverClassName: org.h2.Driver
+    hikari:
+      connection-timeout: 30000
+      idle-timeout: 600000
+      max-lifetime: 1800000
+      maximum-pool-size: 10
+      minimum-idle: 5
+  jpa:
+    open-in-view: false
+    database-platform: org.hibernate.dialect.H2Dialect
+    hibernate:
+      ddl-auto: none
+    properties:
+      hibernate:
+        jdbc:
+          batch_size: 50
+        order_inserts: true
+        order_updates: true
+        format_sql: false
+    show-sql: false
+  h2:
+    console:
+      enabled: true
+      path: /h2-console
+      settings.trace: false
+      settings.web-allow-others: false
+  liquibase:
+    drop-first: false
+    default-schema: public
+    enabled: false
+    secureParsing: true
+    change-log: classpath:/db/changelog/db-changelog-master.xml
+    url: ${spring.datasource.url}
+    driverClassName: ${spring.datasource.driverClassName}
+    user: ${spring.datasource.username}
+    password: ${spring.datasource.password}
+  mail:
+    show-name: yor exhibition name
+    username: youremail@gmail.com
+    password: Copied Password From App Password
+    host: smtp.gmail.com
+    port: 587
+    properties:
+      mail:
+        smtp:
+          auth: true
+          starttls:
+            enable: true
+            required: true
+        transport:
+          protocol: smtp
