@@ -13,12 +13,12 @@ public class Schedulers {
     private final OrderProcess orderProcess;
     private final EmailProcess emailSend;
 
-    @Scheduled(fixedRate = 60000, initialDelay = 60000)
+    @Scheduled(fixedDelay = 60000, initialDelay = 30000)
     public void processOrdersPending() {
         orderProcess.execute();
     }
 
-    @Scheduled(fixedRate = 65000, initialDelay = 65000)
+    @Scheduled(fixedDelay = 60000, initialDelay = 60000)
     public void sendEmailsPending() {
         emailSend.execute();
     }

@@ -46,9 +46,8 @@ spring:
     user: ${spring.datasource.username}
     password: ${spring.datasource.password}
   mail:
-    show-name: yor exhibition name
-    username: youremail@gmail.com
-    password: Copied Password From App Password
+    username: "yor email"
+    password: "your pass"
     host: smtp.gmail.com
     port: 587
     properties:

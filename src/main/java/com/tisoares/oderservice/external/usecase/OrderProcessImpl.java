@@ -23,6 +23,7 @@ public class OrderProcessImpl implements OrderProcess {
     private final StockMovementRetrieve stockMovementRetrieve;
     private final OrderRetrieve orderRetrieve;
     private final OrderHistoryCreate orderHistoryCreate;
+    private final StockMovementUpdate stockMovementUpdate;
     private final OrderUpdate orderUpdate;
     private final EmailCreate emailCreate;
 
@@ -35,7 +36,9 @@ public class OrderProcessImpl implements OrderProcess {
             Optional<OrderHistory> oh = order.addItemFromStock(sm);
             if (oh.isPresent()) {
                 logger.info("Order {} used to Stock Movement {} - {} items", order.getId(), sm.getId(), oh.get().getQuantity());
+                stockMovementUpdate.execute(sm);
                 orderHistoryCreate.execute(oh.get());
+
                 if (order.getOrderStatus() == OrderStatus.COMPLETED) {
                     logger.info("Order {} is completed", order.getId());
                     emailCreate.execute(order);
@@ -51,8 +54,12 @@ public class OrderProcessImpl implements OrderProcess {
     }
 
     @Override
+    @Transactional
     public void execute() {
+        logger.info("Starting routine to complete orders!");
         List<Order> orders = orderRetrieve.execute();
+        logger.info("Processing {} orders", orders.size());
         orders.forEach(this::execute);
+        logger.info("Finished routine to complete orders!");
     }
 }

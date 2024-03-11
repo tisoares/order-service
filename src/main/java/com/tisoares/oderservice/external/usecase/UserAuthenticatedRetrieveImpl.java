@@ -14,7 +14,9 @@ import java.util.Optional;
 public class UserAuthenticatedRetrieveImpl implements UserAuthenticatedRetrieve {
     @Override
     public Optional<User> execute() {
-        if (SecurityContextHolder.getContext().getAuthentication().getDetails() instanceof User) {
+        Object o = SecurityContextHolder.getContext().getAuthentication().getDetails();
+
+        if (o instanceof User) {
             return Optional.of((User) SecurityContextHolder.getContext().getAuthentication().getDetails());
         }
         return Optional.empty();

@@ -1,5 +1,6 @@
 package com.tisoares.oderservice.internal.domain;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.tisoares.oderservice.internal.configuration.LazyFieldsFilter;
@@ -48,6 +49,11 @@ public class Order extends BaseEntity {
     @JsonIgnoreProperties({"order", "stockMovement.item", "item"})
     private Set<OrderHistory> orderHistory = new HashSet<>();
 
+    @Version
+    @JsonIgnore
+    @Column(name = "version", nullable = false)
+    private Integer version;
+    
     public Order() {
     }
 
@@ -62,13 +68,17 @@ public class Order extends BaseEntity {
         return new Builder();
     }
 
+    @JsonInclude(JsonInclude.Include.NON_NULL)
     public Set<OrderHistory> getOrderHistory() {
-        return Collections.unmodifiableSet(this.orderHistory);
+        if (Persistence.getPersistenceUtil().isLoaded(this.orderHistory)) {
+            return Collections.unmodifiableSet(this.orderHistory);
+        }
+        return null;
     }
 
     public Optional<OrderHistory> addItemFromStock(StockMovement stockMovement) {
         if (this.orderStatus == OrderStatus.COMPLETED) {
-            throw new OrderException("The order has already been completed");
+            throw new OrderException("The order " + this.getId() + " has already been completed");
         }
 
         if (stockMovement != null && stockMovement.getAvailable().compareTo(0) > 0) {
@@ -100,12 +110,18 @@ public class Order extends BaseEntity {
     }
 
     public Integer getTotalItemsAdded() {
-        return this.orderHistory.stream()
+        if (this.getOrderHistory() == null) {
+            return null;
+        }
+        return this.getOrderHistory().stream()
                 .map(OrderHistory::getQuantity)
                 .reduce(0, Integer::sum);
     }
 
     public Integer getRemainingToComplete() {
+        if (this.getTotalItemsAdded() == null) {
+            return null;
+        }
         return this.quantity - this.getTotalItemsAdded();
     }
 

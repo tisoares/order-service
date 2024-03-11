@@ -53,7 +53,7 @@ public class StockMovement extends BaseEntity {
 
     public StockMovement removeFromStock(Integer value) {
         if (value == null || value.compareTo(0) <= 0) {
-            throw new StockMovementException("Invalid value to remove from stock");
+            throw new StockMovementException("Invalid value to remove from stock " + value);
         }
         if (value.compareTo(this.getAvailable()) > 0) {
             throw new StockMovementException("Insufficient quantity of items in stock. Available: "

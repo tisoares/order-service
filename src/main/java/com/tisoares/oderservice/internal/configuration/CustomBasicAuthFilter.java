@@ -57,7 +57,7 @@ public class CustomBasicAuthFilter extends OncePerRequestFilter {
             UsernamePasswordAuthenticationToken authToken = new UsernamePasswordAuthenticationToken(
                     user.get().getEmail(), user.get().getPassword(),
                     Collections.singletonList(new SimpleGrantedAuthority("USER")));
-            authToken.setDetails(user);
+            authToken.setDetails(user.get());
             SecurityContextHolder.getContext().setAuthentication(authToken);
         }
     }

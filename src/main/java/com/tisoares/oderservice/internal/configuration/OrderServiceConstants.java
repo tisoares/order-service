@@ -2,6 +2,7 @@ package com.tisoares.oderservice.internal.configuration;
 
 public final class OrderServiceConstants {
 
+    public static final String EMAIL_NAME = "Order Service";
     public static final String APPLICATION_PROPERTY_PREFIX = "order-service";
     public static final String URL_PREFIX = "/api";
     public static final String V1 = "/v1";
@@ -32,7 +33,7 @@ public final class OrderServiceConstants {
             "/v3/api-docs/**",
             "/swagger-ui/**",
             // H2
-            "/h2-console/**",
+//            "/h2-console/**",
             // Actuator
             "/actuator/**"
     };

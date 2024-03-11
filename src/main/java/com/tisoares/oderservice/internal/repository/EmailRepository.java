@@ -15,6 +15,6 @@ import java.util.List;
 @Repository
 public interface EmailRepository extends BaseRepository<Email> {
     @QueryHints({@QueryHint(name = AvailableSettings.JPA_LOCK_TIMEOUT, value = "" + LockOptions.SKIP_LOCKED)})
-    @Lock(LockModeType.OPTIMISTIC)
+    @Lock(LockModeType.PESSIMISTIC_READ)
     List<Email> findTop50ByStatusOrderByCreatedAtAsc(EmailStatus emailStatus);
 }

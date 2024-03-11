@@ -27,10 +27,14 @@ public class EmailProcessImpl implements EmailProcess {
 
     @Override
     public void execute() {
+        logger.info("Starting routine to send email");
         boolean pending = true;
         while (pending) {
             pending = Boolean.TRUE.equals(transactionManager.execute(trx -> {
                 List<Email> orders = emailRetrieve.execute();
+
+                logger.info("Sending {} emails", orders.size());
+
                 if (orders.isEmpty()) {
                     return false;
                 }
@@ -38,6 +42,7 @@ public class EmailProcessImpl implements EmailProcess {
                 return true;
             }));
         }
+        logger.info("Finished routine to send email");
     }
 
     @Override

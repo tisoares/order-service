@@ -40,3 +40,7 @@ Credentials:
 username: admin@admin.com
 password: 123456
 ```
+
+Example parameters GetAll requests:
+
+![cinema_classes.png](docs%2Fgetall-parameters-exemple.png)

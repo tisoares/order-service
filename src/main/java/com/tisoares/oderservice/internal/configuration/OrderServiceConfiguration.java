@@ -1,15 +1,12 @@
 package com.tisoares.oderservice.internal.configuration;
 
+import org.springframework.boot.autoconfigure.AutoConfiguration;
+import org.springframework.boot.context.properties.ConfigurationProperties;
+import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.scheduling.annotation.EnableScheduling;
-import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
-import org.springframework.security.config.annotation.web.builders.HttpSecurity;
-import org.springframework.security.config.http.SessionCreationPolicy;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
-import org.springframework.security.crypto.password.PasswordEncoder;
-import org.springframework.security.web.SecurityFilterChain;
-import org.springframework.security.web.authentication.www.BasicAuthenticationFilter;
+import org.springframework.data.jpa.repository.config.EnableJpaAuditing;
+import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 import springfox.documentation.builders.ApiInfoBuilder;
 import springfox.documentation.builders.PathSelectors;
 import springfox.documentation.builders.RequestHandlerSelectors;
@@ -21,45 +18,14 @@ import springfox.documentation.swagger2.annotations.EnableSwagger2;
 
 import java.util.Collections;
 
-import static com.tisoares.oderservice.internal.configuration.OrderServiceConstants.AUTH_WHITELIST;
-
 @Configuration
+@AutoConfiguration
+@EnableJpaRepositories
+@EnableJpaAuditing
 @EnableSwagger2
-@EnableGlobalMethodSecurity(securedEnabled = true, jsr250Enabled = true)
-@EnableScheduling
+@EnableConfigurationProperties(OrderServiceProperties.class)
+@ConfigurationProperties(prefix = "spring.liquibase", ignoreUnknownFields = false)
 public class OrderServiceConfiguration {
-
-    @Bean
-    public PasswordEncoder encoder() {
-        return new BCryptPasswordEncoder();
-    }
-
-    @Bean
-    public SecurityFilterChain filterChain(HttpSecurity http,
-                                           CustomBasicAuthFilter customBasicAuthFilter) throws Exception {
-        http.cors().disable()
-                .csrf().disable()
-                .authorizeRequests().antMatchers(AUTH_WHITELIST).permitAll()
-                .anyRequest().authenticated()
-                .and()
-//                .httpBasic();
-                .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
-                .and()
-                .addFilterBefore(customBasicAuthFilter, BasicAuthenticationFilter.class);
-
-        http.headers().frameOptions().disable(); //H2 Console
-        return http.build();
-    }
-
-//    @Bean
-//    public InMemoryUserDetailsManager userDetailsService() {
-//        UserDetails user = User.withDefaultPasswordEncoder()
-//                .username("admin")
-//                .password("1234")
-//                .roles("ADMIN")
-//                .build();
-//        return new InMemoryUserDetailsManager(user);
-//    }
 
     @Bean
     public Docket api() {
@@ -99,4 +65,24 @@ public class OrderServiceConfiguration {
         return new SecurityReference("basicAuth", new AuthorizationScope[0]);
     }
 
+//    @Bean
+//    public ObjectMapper objectMapper() {
+//        return new ObjectMapper()
+//                .findAndRegisterModules()
+//                .registerModule(hibernateModule())
+//                .registerModule(new JavaTimeModule())
+//                .disable(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS);
+//    }
+//
+//    @Bean
+//    public Hibernate5Module hibernateModule() {
+//        Hibernate5Module hibernateModule = new Hibernate5Module();
+//        hibernateModule.disable(Hibernate5Module.Feature.FORCE_LAZY_LOADING);
+//        return hibernateModule;
+//    }
+//
+//    @Bean
+//    protected Hibernate5Module module() {
+//        return new Hibernate5Module();
+//    }
 }
