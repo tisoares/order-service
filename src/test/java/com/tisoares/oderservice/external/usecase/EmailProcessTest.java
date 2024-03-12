@@ -9,14 +9,16 @@ import com.tisoares.oderservice.internal.domain.enums.EmailStatus;
 import com.tisoares.oderservice.internal.exception.BaseNotFoundException;
 import com.tisoares.oderservice.internal.usecase.EmailProcess;
 import com.tisoares.oderservice.internal.usecase.EmailRetrieve;
-import com.tisoares.oderservice.internal.usecase.EmailSender;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
-import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.boot.test.mock.mockito.SpyBean;
+import org.springframework.mail.MailSendException;
+import org.springframework.mail.javamail.JavaMailSender;
 
+import javax.mail.internet.MimeMessage;
 import javax.transaction.Transactional;
 import java.util.List;
 
@@ -26,8 +28,9 @@ import java.util.List;
 @DatabaseTearDown(value = "classpath:/dbtest/other/email-send.xml", type = DatabaseOperation.TRUNCATE_TABLE)
 public class EmailProcessTest extends BaseIntegratedTest {
 
-    @MockBean
-    private EmailSender emailSender;
+    @SpyBean
+//    private EmailSender emailSender;
+    private JavaMailSender emailSender;
 
     @Autowired
     private EmailRetrieve emailRetrieve;
@@ -39,7 +42,7 @@ public class EmailProcessTest extends BaseIntegratedTest {
     @Transactional
     void emailSend() {
         Mockito.clearInvocations(emailSender);
-        Mockito.when(emailSender.execute(Mockito.any(Email.class))).thenReturn(true);
+        Mockito.doNothing().when(emailSender).send(Mockito.any(MimeMessage.class));
 
         Email email = emailRetrieve.execute(5L).orElseThrow(() -> new BaseNotFoundException("Email not found!"));
 
@@ -48,15 +51,15 @@ public class EmailProcessTest extends BaseIntegratedTest {
         Assertions.assertEquals(EmailStatus.SENT, result.getStatus());
         Assertions.assertEquals(0, result.getAttempt());
 
-        Mockito.verify(emailSender, Mockito.times(1)).execute(Mockito.any(Email.class));
-        Mockito.verifyNoMoreInteractions(emailSender);
+        Mockito.verify(emailSender, Mockito.times(1)).send(Mockito.any(MimeMessage.class));
+        Mockito.verify(emailSender, Mockito.times(1)).createMimeMessage();
     }
 
     @Test
     @Transactional
     void emailSendFail() {
         Mockito.clearInvocations(emailSender);
-        Mockito.when(emailSender.execute(Mockito.any(Email.class))).thenReturn(false);
+        Mockito.doThrow(new MailSendException("Test exception")).when(emailSender).send(Mockito.any(MimeMessage.class));
 
         Email email = emailRetrieve.execute(5L).orElseThrow(() -> new BaseNotFoundException("Email not found!"));
 
@@ -73,8 +76,8 @@ public class EmailProcessTest extends BaseIntegratedTest {
         Assertions.assertEquals(EmailStatus.ERROR, result.getStatus());
         Assertions.assertEquals(3, result.getAttempt());
 
-        Mockito.verify(emailSender, Mockito.times(3)).execute(Mockito.any(Email.class));
-        Mockito.verifyNoMoreInteractions(emailSender);
+        Mockito.verify(emailSender, Mockito.times(3)).send(Mockito.any(MimeMessage.class));
+        Mockito.verify(emailSender, Mockito.times(3)).createMimeMessage();
     }
 
 
@@ -82,7 +85,7 @@ public class EmailProcessTest extends BaseIntegratedTest {
     @Transactional
     void emailSendAllSuccess() {
         Mockito.clearInvocations(emailSender);
-        Mockito.when(emailSender.execute(Mockito.any(Email.class))).thenReturn(true);
+        Mockito.doNothing().when(emailSender).send(Mockito.any(MimeMessage.class));
 
         List<Email> before = emailRetrieve.execute();
 
@@ -94,15 +97,15 @@ public class EmailProcessTest extends BaseIntegratedTest {
 
         Assertions.assertEquals(0, after.size());
 
-        Mockito.verify(emailSender, Mockito.times(2)).execute(Mockito.any(Email.class));
-        Mockito.verifyNoMoreInteractions(emailSender);
+        Mockito.verify(emailSender, Mockito.times(2)).send(Mockito.any(MimeMessage.class));
+        Mockito.verify(emailSender, Mockito.times(2)).createMimeMessage();
     }
 
     @Test
     @Transactional
     void emailSendAllFail() {
         Mockito.clearInvocations(emailSender);
-        Mockito.when(emailSender.execute(Mockito.any(Email.class))).thenReturn(false);
+        Mockito.doNothing().doThrow(new MailSendException("Test exception")).when(emailSender).send(Mockito.any(MimeMessage.class));
 
         List<Email> before = emailRetrieve.execute();
 
@@ -114,7 +117,7 @@ public class EmailProcessTest extends BaseIntegratedTest {
 
         Assertions.assertEquals(0, after.size());
 
-        Mockito.verify(emailSender, Mockito.times(6)).execute(Mockito.any(Email.class));
-        Mockito.verifyNoMoreInteractions(emailSender);
+        Mockito.verify(emailSender, Mockito.times(4)).send(Mockito.any(MimeMessage.class));
+        Mockito.verify(emailSender, Mockito.times(4)).createMimeMessage();
     }
 }

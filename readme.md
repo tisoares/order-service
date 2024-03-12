@@ -8,6 +8,13 @@ Docker compose command:
 docker compose -f postgre-compose.yaml  up -d
 ```
 
+Create Schema on database:
+
+```postgresql
+-- DROP SCHEMA order_service;
+CREATE SCHEMA order_service AUTHORIZATION "order-service";
+```
+
 Install project:
 
 ```shell

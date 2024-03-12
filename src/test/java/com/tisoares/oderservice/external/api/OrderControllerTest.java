@@ -147,6 +147,32 @@ public class OrderControllerTest extends BaseIntegratedTest {
                 .andExpect(status().isOk());
     }
 
+    @Test
+    @Transactional
+    void deleteCompletedOrder() throws Exception {
+        Item item = createItem("Mac Book");
+        StockMovement stock = createStock(item, 10);
+        OrderPayload payload = createPayload(item, 10);
+        Order expect = create.execute(payload);
+        mockMvc.perform(delete(URL + "/" + expect.getId()))
+                .andExpect(content().contentType(MediaType.APPLICATION_JSON_VALUE))
+                .andExpect(status().isBadRequest())
+                .andExpect(jsonPath("$.message", is("Could not delete. Order has been completed")));
+    }
+
+    @Test
+    @Transactional
+    void deleteProcessingOrder() throws Exception {
+        Item item = createItem("Mac Book");
+        StockMovement stock = createStock(item, 5);
+        OrderPayload payload = createPayload(item, 10);
+        Order expect = create.execute(payload);
+        mockMvc.perform(delete(URL + "/" + expect.getId()))
+                .andExpect(content().contentType(MediaType.APPLICATION_JSON_VALUE))
+                .andExpect(status().isBadRequest())
+                .andExpect(jsonPath("$.message", is("Could not delete. Order has been started to process.")));
+    }
+
     private OrderPayload createPayload() {
         return this.createPayload(this.createItem("Computer"), 10);
     }
