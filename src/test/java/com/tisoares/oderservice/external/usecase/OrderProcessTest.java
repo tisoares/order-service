@@ -16,6 +16,7 @@ import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMock
 
 import javax.transaction.Transactional;
 import java.util.List;
+import java.util.stream.Stream;
 
 //@DirtiesContext
 @AutoConfigureMockMvc
@@ -36,16 +37,16 @@ public class OrderProcessTest extends BaseIntegratedTest {
     @Transactional
     void orderProcessTest() {
 
-        List<Order> before = orderRetrieve.execute();
-        Assertions.assertEquals(2, before.size());
+        Stream<Order> before = orderRetrieve.execute();
+        Assertions.assertEquals(2, before.count());
 
         List<Email> emailBefore = emailRetrieve.execute();
         Assertions.assertEquals(0, emailBefore.size());
 
         orderProcess.execute();
 
-        List<Order> after = orderRetrieve.execute();
-        Assertions.assertEquals(0, after.size());
+        Stream<Order> after = orderRetrieve.execute();
+        Assertions.assertEquals(0, after.count());
 
         List<Email> emailAfter = emailRetrieve.execute();
         Assertions.assertEquals(2, emailAfter.size());

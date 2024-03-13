@@ -13,6 +13,8 @@ import org.springframework.stereotype.Service;
 import javax.transaction.Transactional;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 @Service
 @Slf4j
@@ -31,14 +33,35 @@ public class OrderProcessImpl implements OrderProcess {
     @Transactional
     public Order execute(Order order) {
         List<StockMovement> stockItems = stockMovementRetrieve.execute(order.getItem());
+        return processOrderByMovement(order, stockItems);
+    }
 
+    @Override
+    @Transactional
+    public void execute() {
+        logger.info("Starting routine to complete orders!");
+        Stream<Order> ordersStream = orderRetrieve.execute();
+        ordersStream.collect(Collectors.groupingBy(Order::getItem)).forEach((item, orders) -> {
+            List<StockMovement> stockItems = stockMovementRetrieve.execute(item);
+            logger.info("Processing {} orders with Item {}", orders.size(), item.getId());
+            for (Order o : orders) {
+                if (stockItems.isEmpty()) {
+                    break;
+                }
+                processOrderByMovement(o, stockItems);
+            }
+        });
+
+        logger.info("Finished routine to complete orders!");
+    }
+
+    private Order processOrderByMovement(Order order, List<StockMovement> stockItems) {
         for (StockMovement sm : stockItems) {
             Optional<OrderHistory> oh = order.addItemFromStock(sm);
             if (oh.isPresent()) {
                 logger.info("Order {} used to Stock Movement {} - {} items", order.getId(), sm.getId(), oh.get().getQuantity());
                 stockMovementUpdate.execute(sm);
                 orderHistoryCreate.execute(oh.get());
-
                 if (order.getOrderStatus() == OrderStatus.COMPLETED) {
                     logger.info("Order {} is completed", order.getId());
                     emailCreate.execute(order);
@@ -46,20 +69,11 @@ public class OrderProcessImpl implements OrderProcess {
                 }
             }
         }
-
+        stockItems.removeIf(sm -> sm.getAvailable().equals(0));
         if (order.getOrderStatus() != OrderStatus.COMPLETED) {
             logger.info("Order {} is {}", order.getId(), order.getOrderStatus().name());
         }
         return orderUpdate.execute(order);
     }
 
-    @Override
-    @Transactional
-    public void execute() {
-        logger.info("Starting routine to complete orders!");
-        List<Order> orders = orderRetrieve.execute();
-        logger.info("Processing {} orders", orders.size());
-        orders.forEach(this::execute);
-        logger.info("Finished routine to complete orders!");
-    }
 }

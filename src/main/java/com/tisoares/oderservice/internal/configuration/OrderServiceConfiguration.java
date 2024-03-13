@@ -1,9 +1,8 @@
 package com.tisoares.oderservice.internal.configuration;
 
-import org.springframework.boot.autoconfigure.AutoConfiguration;
-import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.data.jpa.repository.config.EnableJpaAuditing;
 import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
@@ -19,12 +18,12 @@ import springfox.documentation.swagger2.annotations.EnableSwagger2;
 import java.util.Collections;
 
 @Configuration
-@AutoConfiguration
-@EnableJpaRepositories
+@ComponentScan(OrderServiceConstants.BASE_PACKAGE)
+@EnableJpaRepositories(value = OrderServiceConstants.BASE_PACKAGE)
 @EnableJpaAuditing
-@EnableSwagger2
 @EnableConfigurationProperties(OrderServiceProperties.class)
-@ConfigurationProperties(prefix = "spring.liquibase", ignoreUnknownFields = false)
+//@ConfigurationProperties(prefix = "spring.liquibase", ignoreUnknownFields = false)
+@EnableSwagger2
 public class OrderServiceConfiguration {
 
     @Bean
@@ -65,24 +64,4 @@ public class OrderServiceConfiguration {
         return new SecurityReference("basicAuth", new AuthorizationScope[0]);
     }
 
-//    @Bean
-//    public ObjectMapper objectMapper() {
-//        return new ObjectMapper()
-//                .findAndRegisterModules()
-//                .registerModule(hibernateModule())
-//                .registerModule(new JavaTimeModule())
-//                .disable(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS);
-//    }
-//
-//    @Bean
-//    public Hibernate5Module hibernateModule() {
-//        Hibernate5Module hibernateModule = new Hibernate5Module();
-//        hibernateModule.disable(Hibernate5Module.Feature.FORCE_LAZY_LOADING);
-//        return hibernateModule;
-//    }
-//
-//    @Bean
-//    protected Hibernate5Module module() {
-//        return new Hibernate5Module();
-//    }
 }

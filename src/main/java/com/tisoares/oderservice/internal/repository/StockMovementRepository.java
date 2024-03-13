@@ -7,7 +7,12 @@ import java.util.List;
 
 public interface StockMovementRepository extends BaseRepository<StockMovement> {
 
-    @Query("select s from StockMovement s join fetch s.item i where s.available > 0 and i.id = :itemId")
+    @Query("select s " +
+            "from StockMovement s " +
+            "join fetch s.item i " +
+            "where s.available > 0 " +
+            "and i.id = :itemId " +
+            "order by s.createdAt asc, s.item.id ")
     List<StockMovement> getStockMovementAvailableByItem(Long itemId);
 
 }

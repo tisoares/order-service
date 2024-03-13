@@ -8,7 +8,7 @@ import com.tisoares.oderservice.internal.usecase.OrderRetrieve;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnSingleCandidate;
 import org.springframework.stereotype.Service;
 
-import java.util.List;
+import java.util.stream.Stream;
 
 @Service
 @ConditionalOnSingleCandidate(OrderRetrieve.class)
@@ -22,7 +22,7 @@ public class OrderRetrieveImpl extends BaseRetrieveImpl<Order> implements OrderR
     }
 
     @Override
-    public List<Order> execute() {
+    public Stream<Order> execute() {
         return orderRepository.getOrdersNotCompleted();
     }
 }
