@@ -18,6 +18,9 @@ import java.util.stream.Collectors;
 
 @Slf4j
 public class SearchCriteriaResolver implements HandlerMethodArgumentResolver {
+
+    private static final String CONTROLLER_SUFFIX = "ControllerImpl";
+
     @Override
     public boolean supportsParameter(MethodParameter parameter) {
         return parameter.getParameterType().equals(SearchCriteria.class);
@@ -26,7 +29,7 @@ public class SearchCriteriaResolver implements HandlerMethodArgumentResolver {
     @Override
     public Object resolveArgument(@NonNull MethodParameter parameter, ModelAndViewContainer mavContainer,
                                   NativeWebRequest webRequest, WebDataBinderFactory binderFactory) throws Exception {
-        Class<?> clazz = Class.forName("com.tisoares.oderservice.internal.domain." + getNameClass(parameter));
+        Class<?> clazz = Class.forName(OrderServiceConstants.DOMAIN_PACKAGE + "." + getNameClass(parameter));
         logger.info("Class request: {}", clazz.getSimpleName());
         List<String> expands = new ArrayList<>();
         List<SearchCriteria.Filter> filters = new ArrayList<>();
@@ -61,8 +64,8 @@ public class SearchCriteriaResolver implements HandlerMethodArgumentResolver {
 
     private String getNameClass(MethodParameter parameter) {
         String request = parameter.getDeclaringClass().getSimpleName();
-        if (request.endsWith("ControllerImpl")) {
-            return request.substring(0, request.indexOf("ControllerImpl"));
+        if (request.endsWith(CONTROLLER_SUFFIX)) {
+            return request.substring(0, request.indexOf(CONTROLLER_SUFFIX));
         }
         return "";
     }

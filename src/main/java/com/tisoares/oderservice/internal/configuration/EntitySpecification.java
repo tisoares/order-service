@@ -8,11 +8,13 @@ import org.springframework.stereotype.Component;
 import org.springframework.util.CollectionUtils;
 
 import javax.persistence.criteria.From;
+import javax.persistence.criteria.JoinType;
 import javax.persistence.criteria.Predicate;
 import java.lang.reflect.Field;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 import java.util.Objects;
 import java.util.stream.Collectors;
@@ -23,11 +25,17 @@ public class EntitySpecification<T extends BaseEntity> {
     public Specification<T> specificationBuilder(SearchCriteria<T> searchCriteria) {
         return (root, query, criteriaBuilder) -> {
             List<Predicate> predicates = new ArrayList<>();
-            if (Objects.nonNull(searchCriteria) && !CollectionUtils.isEmpty(searchCriteria.getExpands())) {
-                searchCriteria.getExpands().forEach(root::join);
-                searchCriteria.getExpands().forEach(root::fetch);
+            if (Long.class != query.getResultType() && Objects.nonNull(searchCriteria)
+                    && !CollectionUtils.isEmpty(searchCriteria.getExpands())) {
+                for (String e : searchCriteria.getExpands()) {
+                    Field f = getField(e, searchCriteria.getClazz());
+                    if (Collection.class.isAssignableFrom(f.getType())) {
+                        root.fetch(e, JoinType.LEFT);
+                    } else {
+                        root.fetch(e);
+                    }
+                }
             }
-
 
             if (Objects.nonNull(searchCriteria) && !CollectionUtils.isEmpty(searchCriteria.getFilters())) {
                 List<SearchCriteria.Filter> filters = searchCriteria.getFilters();
@@ -52,7 +60,7 @@ public class EntitySpecification<T extends BaseEntity> {
             if (dep.length > 1) {
                 for (int i = 0; i < dep.length - 1; i++) {
                     fClass = getField(dep[i].trim(), c);
-                    if ("com.tisoares.oderservice.internal.domain".equals(fClass.getType().getPackage().getName())) {
+                    if (OrderServiceConstants.DOMAIN_PACKAGE.equals(fClass.getType().getPackage().getName())) {
                         from = root.join(dep[i].trim());
                         c = fClass.getType();
                     }

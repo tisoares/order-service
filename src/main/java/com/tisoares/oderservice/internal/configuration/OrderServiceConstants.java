@@ -3,6 +3,8 @@ package com.tisoares.oderservice.internal.configuration;
 public final class OrderServiceConstants {
 
     public static final String BASE_PACKAGE = "com.tisoares.oderservice";
+
+    public static final String DOMAIN_PACKAGE = "com.tisoares.oderservice.internal.domain";
     public static final String EMAIL_NAME = "Order Service";
     public static final String APPLICATION_PROPERTY_PREFIX = "order-service";
     public static final String URL_PREFIX = "/api";
