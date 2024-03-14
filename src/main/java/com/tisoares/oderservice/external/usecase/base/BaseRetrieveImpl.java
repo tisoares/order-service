@@ -36,26 +36,31 @@ public abstract class BaseRetrieveImpl<T extends BaseEntity> implements BaseRetr
         if (StringUtils.isBlank(expand)) {
             return this.execute(id);
         }
-        return repository.findOne(entitySpecification.specificationBuilder(SearchCriteria.builder()
+
+        Class<T> clazz = getGenericClass();
+
+        SearchCriteria<T> searchCriteria = (SearchCriteria<T>) SearchCriteria.builder()
+                .clazz((Class<BaseEntity>) clazz)
                 .expands(Arrays.asList(expand.split(OrderServiceConstants.EXPAND_PARAMS_DELIMITER)))
                 .filters(Collections.singletonList(SearchCriteria.Filter.builder()
                         .field(DEFAULT_IDENTIFIER)
                         .operator(SearchCriteria.Filter.QueryOperator.EQUALS)
                         .value(String.valueOf(id))
                         .build()))
-                .build()));
+                .build();
+
+        return repository.findOne(entitySpecification.specificationBuilder(searchCriteria));
     }
 
     @Override
-    public Page<T> execute(Pageable pageable, SearchCriteria searchCriteria) {
+    public Page<T> execute(Pageable pageable, SearchCriteria<T> searchCriteria) {
         return repository.findAll(entitySpecification.specificationBuilder(searchCriteria), pageable);
     }
 
 
     @Override
     public T execute(T entity, String extend) {
-        Class<T> clazz = (Class<T>) ((ParameterizedType) this.getClass().getGenericSuperclass())
-                .getActualTypeArguments()[0];
+        Class<T> clazz = getGenericClass();
 
         if (Objects.isNull(entity)) {
             throw new BaseNotFoundException(String.format("Entity %s not found", clazz.getSimpleName()));
@@ -69,5 +74,10 @@ public abstract class BaseRetrieveImpl<T extends BaseEntity> implements BaseRetr
 
     public T execute(T entity) {
         return this.execute(entity, "");
+    }
+
+    private Class<T> getGenericClass() {
+        return (Class<T>) ((ParameterizedType) this.getClass().getGenericSuperclass())
+                .getActualTypeArguments()[0];
     }
 }

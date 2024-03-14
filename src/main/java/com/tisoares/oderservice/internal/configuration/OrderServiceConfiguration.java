@@ -1,5 +1,6 @@
 package com.tisoares.oderservice.internal.configuration;
 
+import org.springframework.boot.autoconfigure.AutoConfiguration;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
@@ -18,6 +19,7 @@ import springfox.documentation.swagger2.annotations.EnableSwagger2;
 import java.util.Collections;
 
 @Configuration
+@AutoConfiguration
 @ComponentScan(OrderServiceConstants.BASE_PACKAGE)
 @EnableJpaRepositories(value = OrderServiceConstants.BASE_PACKAGE)
 @EnableJpaAuditing

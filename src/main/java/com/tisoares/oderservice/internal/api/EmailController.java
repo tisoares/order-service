@@ -34,7 +34,7 @@ public interface EmailController {
                     @Parameter(in = ParameterIn.QUERY, name = "$filter", description = "filter data", example = "field,condition,value;foo,equals,bar"),
                     @Parameter(in = ParameterIn.QUERY, name = "$expand", description = "Expand dependencies", example = "foo,bar")}
     )
-    Page<Email> getAll(@ApiIgnore Pageable pageable, @ApiIgnore SearchCriteria searchCriteria);
+    Page<Email> getAll(@ApiIgnore Pageable pageable, @ApiIgnore SearchCriteria<Email> searchCriteria);
 
     @DeleteMapping("/{id}")
     void delete(@PathVariable Long id);

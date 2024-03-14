@@ -30,7 +30,7 @@ public class StockMovementControllerImpl implements StockMovementController {
     }
 
     @Override
-    public Page<StockMovement> getAll(Pageable pageable, SearchCriteria searchCriteria) {
+    public Page<StockMovement> getAll(Pageable pageable, SearchCriteria<StockMovement> searchCriteria) {
         return stockMovementRetrieve.execute(pageable, searchCriteria);
     }
 

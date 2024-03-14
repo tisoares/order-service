@@ -18,6 +18,6 @@ public interface BaseRetrieve<T extends BaseEntity> {
 
     Optional<T> execute(Long id, String expand);
 
-    Page<T> execute(Pageable pageable, SearchCriteria searchCriteria);
+    Page<T> execute(Pageable pageable, SearchCriteria<T> searchCriteria);
 
 }

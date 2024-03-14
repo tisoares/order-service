@@ -33,7 +33,7 @@ public class UserControllerImpl implements UserController {
     }
 
     @Override
-    public Page<User> getAll(Pageable pageable, SearchCriteria searchCriteria) {
+    public Page<User> getAll(Pageable pageable, SearchCriteria<User> searchCriteria) {
         return userRetrieve.execute(pageable, searchCriteria);
     }
 

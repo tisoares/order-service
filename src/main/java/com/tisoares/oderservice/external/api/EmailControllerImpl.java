@@ -27,7 +27,7 @@ public class EmailControllerImpl implements EmailController {
     }
 
     @Override
-    public Page<Email> getAll(Pageable pageable, SearchCriteria searchCriteria) {
+    public Page<Email> getAll(Pageable pageable, SearchCriteria<Email> searchCriteria) {
         return emailRetrieve.execute(pageable, searchCriteria);
     }
 

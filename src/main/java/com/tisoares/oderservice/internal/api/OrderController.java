@@ -21,7 +21,7 @@ public interface OrderController {
     Optional<Order> getById(@PathVariable Long id);
 
     @GetMapping
-    Page<Order> getAll(Pageable pageable, SearchCriteria searchCriteria);
+    Page<Order> getAll(Pageable pageable, SearchCriteria<Order> searchCriteria);
 
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)

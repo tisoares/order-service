@@ -21,7 +21,7 @@ public interface UserController {
     Optional<User> getById(@PathVariable Long id);
 
     @GetMapping
-    Page<User> getAll(Pageable pageable, SearchCriteria searchCriteria);
+    Page<User> getAll(Pageable pageable, SearchCriteria<User> searchCriteria);
 
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)

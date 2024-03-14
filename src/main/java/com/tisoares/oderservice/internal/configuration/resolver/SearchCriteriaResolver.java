@@ -2,7 +2,9 @@ package com.tisoares.oderservice.internal.configuration.resolver;
 
 import com.tisoares.oderservice.external.domain.SearchCriteria;
 import com.tisoares.oderservice.internal.configuration.OrderServiceConstants;
+import com.tisoares.oderservice.internal.domain.BaseEntity;
 import lombok.NonNull;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.core.MethodParameter;
 import org.springframework.web.bind.support.WebDataBinderFactory;
 import org.springframework.web.context.request.NativeWebRequest;
@@ -14,6 +16,7 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
 
+@Slf4j
 public class SearchCriteriaResolver implements HandlerMethodArgumentResolver {
     @Override
     public boolean supportsParameter(MethodParameter parameter) {
@@ -23,6 +26,8 @@ public class SearchCriteriaResolver implements HandlerMethodArgumentResolver {
     @Override
     public Object resolveArgument(@NonNull MethodParameter parameter, ModelAndViewContainer mavContainer,
                                   NativeWebRequest webRequest, WebDataBinderFactory binderFactory) throws Exception {
+        Class<?> clazz = Class.forName("com.tisoares.oderservice.internal.domain." + getNameClass(parameter));
+        logger.info("Class request: {}", clazz.getSimpleName());
         List<String> expands = new ArrayList<>();
         List<SearchCriteria.Filter> filters = new ArrayList<>();
         if (webRequest.getParameterMap().containsKey(OrderServiceConstants.EXPAND_PARAMS)) {
@@ -50,6 +55,16 @@ public class SearchCriteriaResolver implements HandlerMethodArgumentResolver {
         return SearchCriteria.builder()
                 .expands(expands)
                 .filters(filters)
+                .clazz((Class<BaseEntity>) clazz)
                 .build();
     }
+
+    private String getNameClass(MethodParameter parameter) {
+        String request = parameter.getDeclaringClass().getSimpleName();
+        if (request.endsWith("ControllerImpl")) {
+            return request.substring(0, request.indexOf("ControllerImpl"));
+        }
+        return "";
+    }
+
 }

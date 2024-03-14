@@ -1,6 +1,5 @@
 package com.tisoares.oderservice.internal.domain;
 
-import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.tisoares.oderservice.internal.configuration.OrderServiceConstants;
@@ -26,12 +25,12 @@ public abstract class BaseEntity implements Serializable {
     private Long id;
 
     @CreationTimestamp
-    @JsonFormat(pattern = OrderServiceConstants.DATE_TIME_PATTERN)
+//    @JsonFormat(pattern = OrderServiceConstants.DATE_TIME_PATTERN)
     @Column(name = "created_at", updatable = false)
     private LocalDateTime createdAt;
 
     @UpdateTimestamp
-    @JsonFormat(pattern = OrderServiceConstants.DATE_TIME_PATTERN)
+//    @JsonFormat(pattern = OrderServiceConstants.DATE_TIME_PATTERN)
     @Column(name = "updated_at", insertable = false)
     private LocalDateTime updatedAt;
 

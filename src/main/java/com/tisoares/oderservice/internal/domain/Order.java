@@ -39,7 +39,7 @@ public class Order extends BaseEntity {
     private User user;
 
     @NotNull
-    @Column(name = "status", nullable = false)
+    @Column(name = "status", nullable = false, columnDefinition = "enum('PENDING', 'COMPLETED')")
     @Enumerated(EnumType.STRING)
     private OrderStatus orderStatus = OrderStatus.PENDING;
 
@@ -53,7 +53,7 @@ public class Order extends BaseEntity {
     @JsonIgnore
     @Column(name = "version", nullable = false)
     private Integer version;
-    
+
     public Order() {
     }
 

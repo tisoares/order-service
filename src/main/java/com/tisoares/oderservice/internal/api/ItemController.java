@@ -21,7 +21,7 @@ public interface ItemController {
     Optional<Item> getById(@PathVariable Long id);
 
     @GetMapping
-    Page<Item> getAll(Pageable pageable, SearchCriteria searchCriteria);
+    Page<Item> getAll(Pageable pageable, SearchCriteria<Item> searchCriteria);
 
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)

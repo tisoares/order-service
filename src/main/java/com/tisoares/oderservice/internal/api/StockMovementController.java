@@ -21,7 +21,7 @@ public interface StockMovementController {
     Optional<StockMovement> getById(@PathVariable Long id);
 
     @GetMapping
-    Page<StockMovement> getAll(Pageable pageable, SearchCriteria searchCriteria);
+    Page<StockMovement> getAll(Pageable pageable, SearchCriteria<StockMovement> searchCriteria);
 
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)

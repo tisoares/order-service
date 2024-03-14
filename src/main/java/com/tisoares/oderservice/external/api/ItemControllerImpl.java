@@ -34,7 +34,7 @@ public class ItemControllerImpl implements ItemController {
     }
 
     @Override
-    public Page<Item> getAll(Pageable pageable, SearchCriteria searchCriteria) {
+    public Page<Item> getAll(Pageable pageable, SearchCriteria<Item> searchCriteria) {
         return itemRetrieve.execute(pageable, searchCriteria);
     }
 

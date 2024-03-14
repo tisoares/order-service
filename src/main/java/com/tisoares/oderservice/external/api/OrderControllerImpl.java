@@ -35,7 +35,7 @@ public class OrderControllerImpl implements OrderController {
     }
 
     @Override
-    public Page<Order> getAll(Pageable pageable, SearchCriteria searchCriteria) {
+    public Page<Order> getAll(Pageable pageable, SearchCriteria<Order> searchCriteria) {
         return orderRetrieve.execute(pageable, searchCriteria);
     }
 
